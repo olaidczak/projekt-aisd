@@ -4,6 +4,7 @@ import networkx as nx
 import matplotlib.pyplot as plt
 
 def dane():
+    print("Witaj Podrózniku! Program pomoze ci wybrać schroniska do którcyh moęsz bezpiecznie dotrzeć podczas twojej wyprawy.")
     # Użytkownik wybiera, czy chce podać dane ręcznie, czy wylosować graf
     try:
         wybór = int(input("Wybierz opcję: 1 - Podaj własne dane, 2 - Wygeneruj losowy graf: "))
@@ -23,7 +24,6 @@ def dane():
                     if graf[i][j] != graf[j][i]:
                         raise Exception("Macierz musi być symetryczna!")
 
-            
             nazwy = []
             print("Podaj nazwy schronisk (po jednej na wiersz):")
             for i in range(n):
