@@ -1,0 +1,53 @@
+name: Build executables
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-executable-macos:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+      - name: Create and start virtual environment
+        run: |
+          python -m venv venv
+          source venv/bin/activate
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+      - name: Build executable
+        run: |
+          pip install pyinstaller
+          pyinstaller projekt-final.py
+      - name: Upload artifact for deployment jobs
+        uses: actions/upload-artifact@v4
+        with:
+          name: executable-macos
+          path: dist/projekt-final/
+
+  build-executable-windows:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+      - name: Create and start virtual environment
+        run: |
+          python -m venv venv
+          venv\Scripts\activate.bat
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+      - name: Build executable
+        run: |
+          pip install pyinstaller
+          pyinstaller projekt-final.py
+      - name: Upload artifact for deployment jobs
+        uses: actions/upload-artifact@v4
+        with:
+          name: executable-windows
+          path: dist\projekt-final\
+
