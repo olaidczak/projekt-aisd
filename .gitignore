@@ -1,3 +1,6 @@
 /build
 /dist
 /*.spec
+
+# macos
+.DS_Store
