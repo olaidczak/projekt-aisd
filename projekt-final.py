@@ -101,8 +101,9 @@ def los_nazwy(n):
                        "Korona", "Burzowe", "Spadająca gwiazda", "Taterka", "Śnieżka", "Schron", "Wiedźma", "Zielone", "Niebieskie", "Srebrne",
                        "Przystanek", "Górka", "Wierch", "Wysokie", "Niżynka", "Kamyczek", "Na zakręcie", "Radosne", "Grota", "Słone",
                        "Zakręcone", "Piękne", "Koziczka", "Salamandra", "Koziołek", "Smaczne", "Przytulne", "Zacisze", "Cieplutkie", "Odpoczynek"]
+    
     if n > len(nazwy_schronisk):
-        return
+        return list(range(0,n))
     
     schroniska = random.sample(nazwy_schronisk, n)
     return schroniska
