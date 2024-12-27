@@ -127,11 +127,12 @@ def rys_graf(graf, nazwy=0):
     labels1 = nx.get_edge_attributes(G, 'weight')
 
     if nazwy == 0:
-        nx.draw_networkx(G, pos)
+        labels2 = {i: str(i) for i in range(len(graf))}
+        nx.draw_networkx(G, pos, with_labels=False)
         nx.draw_networkx_edge_labels(G, pos, edge_labels=labels1)
-
+        nx.draw_networkx_labels(G, pos, labels=labels2, font_color="black")
     else:
-        labels2 = {i: nazwy[i] for i in range(len(nazwy))}
+        labels2 = {i: f"{nazwy[i]} ({i})" for i in range(len(nazwy))}
         nx.draw_networkx(G, pos, with_labels=False)
         nx.draw_networkx_edge_labels(G, pos, edge_labels=labels1)
         nx.draw_networkx_labels(G, pos, labels=labels2, font_color="black")
