@@ -4,71 +4,131 @@ import networkx as nx
 import matplotlib.pyplot as plt
 
 def dane():
-    print("Witaj Podrózniku! Program pomoze ci wybrać schroniska do których mozęsz bezpiecznie dotrzeć podczas twojej wyprawy.")
-    # Użytkownik wybiera, czy chce podać dane ręcznie, czy wylosować graf
-    try:
-        wybór = int(input("Wybierz opcję: 1 - Podaj własne dane, 2 - Wygeneruj losowy graf: "))
-        if wybór == 1:
-            n = int(input("Podaj liczbę schronisk: "))
-            print("Podaj macierz nxn, symetryczną, z zerami na głównej przekątnej (odzwierciedlającą istnienie szlaków jako niezerowe liczby oraz ich wysokość jako wartość liczby) jako wiersze liczb oddzielonych spacjami (n x n):")
-            graf = []
-            for i in range(n):
-                wiersz = list(map(int, input(f"Wiersz {i+1}: ").split()))
-                if len(wiersz) != n:
-                    raise ValueError("Macierz musi mieć rozmiar nxn!")
-                graf.append(wiersz)
-            for i in range(n):
-                if graf[i][i] != 0:
-                   raise Exception("Nie może istnieć szlak do tego samego schroniska!") 
-                for j in range(n):
-                    if graf[i][j] != graf[j][i]:
-                        raise Exception("Macierz musi być symetryczna!")
+    print("Witaj Podróżniku! Program pomoże ci wybrać schroniska do których możesz bezpiecznie dotrzeć podczas twojej wyprawy.")
+    
+    while True:
+        try:
+            wybor = int(input("Wybierz opcję: 1 - Podaj własne dane, 2 - Wygeneruj losowy graf: "))
+            if wybor == 1:
+                while True:
+                    try:
+                        n = int(input("Podaj liczbę schronisk: "))
+                        if n <= 0:
+                            raise ValueError("Liczba schronisk musi być dodatnia.")
+                        break
+                    except ValueError as e:
+                        print("Błąd:", e)
+                
+                while True:
+                    try:
+                        print("Podaj macierz nxn, symetryczną, z zerami na głównej przekątnej (odzwierciedlającą istnienie szlaków jako niezerowe liczby oraz ich wysokość jako wartość liczby) jako wiersze liczb oddzielonych spacjami (n x n):")
+                        graf = []
 
-            nazwy = []
-            print("Podaj nazwy schronisk (po jednej na wiersz):")
-            for i in range(n):
-                nazwa = input(f"Nazwa dla wierzchołka {i+1}: ")
-                nazwy.append(nazwa)
+                        for i in range(n):
+                            while True:
+                                try:
+                                    wiersz = list(map(int, input(f"Wiersz {i+1}: ").split()))
+                                    if len(wiersz) != n:
+                                        raise ValueError(f"Wiersz musi zawierać {n} liczby.")
+                                    graf.append(wiersz)
+                                    break  
+                                except ValueError as e:
+                                    print("Błąd:", e)
 
-            Wmax = int(input("Podaj maksymalną wysokość szlaku (Wmax): "))
-            if Wmax <= 0:
-                raise Exception("Wysokość musi być liczbą dodatnią.")
-            
-            numer = int(input("Podaj numer wierzchołka startowego: "))
-            if numer < 0 or numer >= n:
-                raise Exception("Numer wierzchołka startowego musi być >= 0 i < ", n)
-            
-            return graf, nazwy, Wmax, numer
+                        for i in range(n):
+                            for j in range(n):
+                                if graf[i][j] != graf[j][i]:
+                                    raise ValueError(f"Macierz musi być symetryczna!")
 
-        elif wybór == 2:
-            n = int(input("Podaj liczbę wierzchołków (n): "))
-            m = int(input("Podaj liczbę krawędzi (m): "))
+                            if graf[i][i] != 0:
+                                raise ValueError(f"Wartość na przekątnej musi być zerem!")
 
-            if m < n - 1:
-                raise Exception("Graf będzie niespójny. Podaj liczbę >= n-1")
-            if m > n * (n - 1) / 2:
-                raise Exception("Za dużo krawędzi w grafie.")
-            
-            Wmax = int(input("Podaj maksymalną wysokość szlaku (Wmax): "))
-            if Wmax <= 0:
-                raise Exception("Wysokość musi być liczbą dodatnią.")
-            
-            W = int(input("Podaj największą wysokość jaka ma być w grafie (W): "))
-            if W < Wmax:
-                raise Exception("Wysokość W musi być większa lub równa Wmax")
-            
-            numer = int(input("Podaj numer wierzchołka startowego: "))
-            if numer < 0 or numer >= n:
-                raise Exception("Numer wierzchołka startowego musi być >= 0 i < ", n)
-            
-            graf, nazwy = los_graf(n, m, W)
-            return graf, nazwy, Wmax, numer
-            
-        else:
-            raise Exception("Nieprawidłowy wybór.")
-    except Exception as e:
-        print("Błąd:", e)
-        exit(1)
+                        break
+
+                    except ValueError as e:
+                        print("\nBłąd w macierzy:", e)
+                        print("Spróbuj ponownie wprowadzić całą macierz.\n")
+                nazwy = []
+                print("Podaj nazwy schronisk (po jednej na wiersz):")
+                for i in range(n):
+                    nazwy.append(input(f"Nazwa dla wierzchołka {i+1}: "))
+
+                while True:
+                    try:
+                        Wmax = int(input("Podaj maksymalną bezpieczną wysokość szlaku (Wmax): "))
+                        if Wmax <= 0:
+                            raise ValueError("Wysokość musi być liczbą dodatnią.")
+                        break
+                    except ValueError as e:
+                        print("Błąd:", e)
+                
+                while True:
+                    try:
+                        numer = int(input("Podaj numer wierzchołka startowego: "))
+                        if numer < 0 or numer >= n:
+                            raise ValueError(f"Numer wierzchołka startowego musi być >= 0 i < {n}.")
+                        break
+                    except ValueError as e:
+                        print("Błąd:", e)
+                
+                return graf, nazwy, Wmax, numer
+
+            elif wybor == 2:
+                while True:
+                    try:
+                        n = int(input("Podaj liczbę wierzchołków (n): "))
+                        if n <= 0:
+                            raise ValueError("Liczba wierzchołków musi być dodatnia.")
+                        break
+                    except ValueError as e:
+                        print("Błąd:", e)
+                
+                while True:
+                    try:
+                        m = int(input("Podaj liczbę krawędzi (m): "))
+                        if m < n - 1:
+                            raise ValueError("Graf będzie niespójny. Podaj liczbę >= n-1.")
+                        if m > n * (n - 1) / 2:
+                            raise ValueError("Za dużo krawędzi w grafie.")
+                        break
+                    except ValueError as e:
+                        print("Błąd:", e)
+
+                while True:
+                    try:
+                        Wmax = int(input("Podaj maksymalną bezpieczną wysokość szlaku (Wmax): "))
+                        if Wmax <= 0:
+                            raise ValueError("Wysokość musi być liczbą dodatnią.")
+                        break
+                    except ValueError as e:
+                        print("Błąd:", e)
+
+                while True:
+                    try:
+                        W = int(input("Podaj największą wysokość jaka ma być w grafie (W): "))
+                        if W < Wmax:
+                            raise ValueError("Wysokość W musi być większa lub równa Wmax.")
+                        break
+                    except ValueError as e:
+                        print("Błąd:", e)
+
+                while True:
+                    try:
+                        numer = int(input("Podaj numer wierzchołka startowego: "))
+                        if numer < 0 or numer >= n:
+                            raise ValueError(f"Numer wierzchołka startowego musi być >= 0 i < {n}.")
+                        break
+                    except ValueError as e:
+                        print("Błąd:", e)
+
+                graf, nazwy = los_graf(n, m, W)
+                return graf, nazwy, Wmax, numer
+
+            else:
+                print("Nieprawidłowy wybór. Spróbuj ponownie.")
+        except ValueError:
+            print("Błąd: Złe dane.")
+
 
 def los_graf(n, m, W):   
     graf = [[0 for i in range(n)] for j in range(n)]
