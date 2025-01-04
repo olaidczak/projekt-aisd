@@ -202,15 +202,30 @@ def rys_graf(graf, nazwy=0):
 def main():
     while True:
         graf, nazwy, Wmax, numer = dane()
-        wynik = osiagalne_wierzch(graf, Wmax, numer)
-        nazwy_osiagalnych = [(nazwy[indeks], indeks) for indeks in wynik]
-        print('Zaczynając z wierzchołka', nazwy[numer], '(numer', numer, ')', 'profesor Bajtazar może dojść do wierzchołków:', nazwy_osiagalnych,
-              'przy maksymalnej bezpiecznej wysokości =', Wmax)
-        rys_graf(graf, nazwy)
+        
+        while True:
+            wynik = osiagalne_wierzch(graf, Wmax, numer)
+            nazwy_osiagalnych = [(nazwy[indeks], indeks) for indeks in wynik]
+            print('Zaczynając z wierzchołka', nazwy[numer], '(numer', numer, ')', 'profesor Bajtazar może dojść do wierzchołków:', nazwy_osiagalnych,
+                  'przy maksymalnej bezpiecznej wysokości =', Wmax)
+            rys_graf(graf, nazwy)
 
+            zmien_start = input("Czy chcesz wystartować z innego wierzchołka? (tak/nie): ").lower()
+            if zmien_start == 'tak':
+                while True:
+                    try:
+                        numer = int(input(f"Podaj nowy numer wierzchołka startowego (0 do {len(graf)-1}): "))
+                        if numer < 0 or numer >= len(graf):
+                            raise ValueError(f"Numer wierzchołka startowego musi być >= 0 i < {len(graf)}.")
+                        break
+                    except ValueError as e:
+                        print("Błąd:", e)
+            else:
+                break
+            
         decyzja = input("Czy chcesz kontynuować? (tak/nie): ").lower()
         if decyzja != 'tak':
-            print("To był bardzo intensywny i obfitujący w górskie krajobrazy dzień. Do zobaczenia, Podróżniku!")
+            print("To był bardzo sportowy i obfitujący w krajobrazy dzień! Do zobaczenia, Podróżniku!")
             break
 
 if __name__ == "__main__":
