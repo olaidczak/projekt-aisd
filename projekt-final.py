@@ -208,6 +208,7 @@ def main():
             nazwy_osiagalnych = [(nazwy[indeks], indeks) for indeks in wynik]
             print('Zaczynając z wierzchołka', nazwy[numer], '(numer', numer, ')', 'profesor Bajtazar może dojść do wierzchołków:', nazwy_osiagalnych,
                   'przy maksymalnej bezpiecznej wysokości =', Wmax)
+            print('UWAGA: Jeśli chcesz zacząć od innego wierzchołka lub wywołać program dla innego grafu zamknij okno z rysunkiem grafu.')
             rys_graf(graf, nazwy)
 
             zmien_start = input("Czy chcesz wystartować z innego wierzchołka? (tak/nie): ").lower()
@@ -223,7 +224,7 @@ def main():
             else:
                 break
             
-        decyzja = input("Czy chcesz kontynuować? (tak/nie): ").lower()
+        decyzja = input("Czy chcesz wywołać program dla innego grafu? (tak/nie): ").lower()
         if decyzja != 'tak':
             print("To był bardzo sportowy i obfitujący w krajobrazy dzień! Do zobaczenia, Podróżniku!")
             break
