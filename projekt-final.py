@@ -206,8 +206,10 @@ def main():
         while True:
             wynik = osiagalne_wierzch(graf, Wmax, numer)
             nazwy_osiagalnych = [(nazwy[indeks], indeks) for indeks in wynik]
+            print("")
             print('Zaczynając z wierzchołka', nazwy[numer], '(numer', numer, ')', 'profesor Bajtazar może dojść do wierzchołków:', nazwy_osiagalnych,
                   'przy maksymalnej bezpiecznej wysokości =', Wmax)
+            print("")
             print('UWAGA: Jeśli chcesz zacząć od innego wierzchołka lub wywołać program dla innego grafu zamknij okno z rysunkiem grafu.')
             rys_graf(graf, nazwy)
 
